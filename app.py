@@ -62,7 +62,7 @@ def plot_user_ranking(messages):
 
     c = s.value_counts().rename("counts")
 
-    df = pd.DataFrame(c[c > 1])
+    df = pd.DataFrame(c)
 
     fig, ax = plt.subplots(1, 1)
 
