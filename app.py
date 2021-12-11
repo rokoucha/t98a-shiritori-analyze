@@ -14,7 +14,7 @@ plt.rcParams['timezone'] = tz
 plt.rcParams["font.family"] = "Source Han Sans JP, Noto Color Emoji"
 
 
-def plot_messages_per_day(messages):
+def plot_messages_per_30m(messages):
     df = pd.DataFrame({"date": [m.created_at for m in messages],
                        "messages": range(0, len(messages))
                        })
@@ -31,14 +31,14 @@ def plot_messages_per_day(messages):
 
     ax.plot(df.index, df.messages)
 
-    plt.ylabel("Number of messages per day")
+    plt.ylabel("Number of messages per 30 minutes")
 
     plt.grid()
 
     fig.savefig("messages_per_day.png")
 
 
-def plot_duplicates_per_day(messages):
+def plot_duplicates_ranking(messages):
     s = pd.Series([m.content for m in messages if not m.author.bot])
 
     c = s.value_counts().rename("counts")
@@ -81,8 +81,8 @@ async def on_ready():
 
     messages = await channel.history(limit=1000).flatten()
 
-    plot_messages_per_day(messages)
-    plot_duplicates_per_day(messages)
+    plot_messages_per_30m(messages)
+    plot_duplicates_ranking(messages)
     plot_user_ranking(messages)
 
     await client.close()
